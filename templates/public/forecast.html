@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Tomorrow’s Flood Forecast</h2>
+        <p class="text-muted mb-0">Latest AI-based prediction for the Kelani River Basin</p>
+    </div>
+
+    {% if forecast %}
+    {% set normal_pct = (forecast.probabilities["Normal"] * 100)|round(1) %}
+    {% set alert_pct = (forecast.probabilities["Alert"] * 100)|round(1) %}
+    {% set minor_pct = (forecast.probabilities["Minor Flood"] * 100)|round(1) %}
+    {% set major_pct = (forecast.probabilities["Major Flood"] * 100)|round(1) %}
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="forecast-card forecast-{{ forecast.predicted_class|lower|replace(' ', '-') }}">
+                <span class="forecast-label">Predicted Class</span>
+                <h2 class="fw-bold mt-2">{{ forecast.predicted_class }}</h2>
+                <p class="mb-0">Forecast Date: {{ forecast.forecast_date }}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="content-card h-100">
+                <h5 class="fw-bold mb-3">Class Probabilities</h5>
+
+                <div class="probability-block mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Normal</span>
+                        <span>{{ normal_pct }}%</span>
+                    </div>
+                    <div class="progress rounded-pill">
+                        <div class="progress-bar bg-success" data-width="{{ normal_pct }}"></div>
+                    </div>
+                </div>
+
+                <div class="probability-block mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Alert</span>
+                        <span>{{ alert_pct }}%</span>
+                    </div>
+                    <div class="progress rounded-pill">
+                        <div class="progress-bar bg-warning" data-width="{{ alert_pct }}"></div>
+                    </div>
+                </div>
+
+                <div class="probability-block mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Minor Flood</span>
+                        <span>{{ minor_pct }}%</span>
+                    </div>
+                    <div class="progress rounded-pill">
+                        <div class="progress-bar bg-danger" data-width="{{ minor_pct }}"></div>
+                    </div>
+                </div>
+
+                <div class="probability-block">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Major Flood</span>
+                        <span>{{ major_pct }}%</span>
+                    </div>
+                    <div class="progress rounded-pill">
+                        <div class="progress-bar bg-purple" data-width="{{ major_pct }}"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="content-card text-center py-5">
+        <h4 class="fw-bold mb-2">No forecast available</h4>
+        <p class="text-muted mb-0">Run a forecast from the admin panel to display results here.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

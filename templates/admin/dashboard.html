@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Admin Dashboard</h2>
+        <p class="text-muted mb-0">Manage flood data, forecasts, and subscriptions</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('admin.add_reading_page') }}" class="dashboard-link-card text-decoration-none">
+                <h5 class="fw-bold mb-2">Add Station Data</h5>
+                <p class="text-muted mb-0">Enter daily water level, rainfall, and discharge data</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ url_for('admin.subscribers_page') }}" class="dashboard-link-card text-decoration-none">
+                <h5 class="fw-bold mb-2">Manage Subscribers</h5>
+                <p class="text-muted mb-0">Add and manage public subscriptions for warnings</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <form method="POST" action="{{ url_for('admin.run_forecast_form') }}">
+                <div class="dashboard-link-card">
+                    <h5 class="fw-bold mb-2">Run Forecast</h5>
+                    <p class="text-muted mb-3">Generate tomorrow’s flood forecast</p>
+                    <input type="date" name="base_date" class="form-control rounded-4 mb-3" required>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">Run Forecast</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <h4 class="mt-4">Send Flood Alert</h4>
+
+<form method="POST" action="{{ url_for('admin.send_alert') }}">
+
+    <div class="mb-3">
+        <label class="form-label">Alert Level</label>
+
+        <select name="alert_level" class="form-select">
+
+            <option value="Alert">Alert</option>
+            <option value="Minor Flood">Minor Flood</option>
+            <option value="Major Flood">Major Flood</option>
+
+        </select>
+
+    </div>
+
+    <button type="submit" class="btn btn-danger">
+        Send Alert Email
+    </button>
+
+</form>
+</div>
+{% endblock %}

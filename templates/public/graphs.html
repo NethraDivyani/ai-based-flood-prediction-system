@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Forecast Graphs</h2>
+        <p class="text-muted mb-0">Weather forecast and AI flood prediction visualizations</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h5 class="section-title">7-Day Rainfall Forecast</h5>
+                <canvas id="rainChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h5 class="section-title">7-Day Temperature Forecast</h5>
+                <canvas id="tempChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="chart-card">
+                <h5 class="section-title">7-Day AI Flood Prediction Probability</h5>
+                <canvas id="floodChart" height="110"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="weather-labels-data" type="application/json">{{ weather_labels | tojson }}</script>
+<script id="weather-rain-data" type="application/json">{{ weather_rain | tojson }}</script>
+<script id="temp-max-data" type="application/json">{{ temp_max | tojson }}</script>
+<script id="temp-min-data" type="application/json">{{ temp_min | tojson }}</script>
+<script id="flood-labels-data" type="application/json">{{ flood_labels | tojson }}</script>
+<script id="flood-values-data" type="application/json">{{ flood_values | tojson }}</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const weatherLabels = JSON.parse(document.getElementById("weather-labels-data").textContent);
+const weatherRain = JSON.parse(document.getElementById("weather-rain-data").textContent);
+const tempMax = JSON.parse(document.getElementById("temp-max-data").textContent);
+const tempMin = JSON.parse(document.getElementById("temp-min-data").textContent);
+const floodLabels = JSON.parse(document.getElementById("flood-labels-data").textContent);
+const floodValues = JSON.parse(document.getElementById("flood-values-data").textContent);
+
+new Chart(document.getElementById("rainChart"), {
+    type: "bar",
+    data: {
+        labels: weatherLabels,
+        datasets: [{
+            label: "Rainfall (mm)",
+            data: weatherRain,
+            backgroundColor: "#1e88e5",
+            borderRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Rainfall (mm)"
+                }
+            }
+        }
+    }
+});
+
+new Chart(document.getElementById("tempChart"), {
+    type: "line",
+    data: {
+        labels: weatherLabels,
+        datasets: [
+            {
+                label: "Max Temp (°C)",
+                data: tempMax,
+                borderColor: "#e53935",
+                backgroundColor: "rgba(229,57,53,0.15)",
+                tension: 0.35,
+                fill: false
+            },
+            {
+                label: "Min Temp (°C)",
+                data: tempMin,
+                borderColor: "#26a69a",
+                backgroundColor: "rgba(38,166,154,0.15)",
+                tension: 0.35,
+                fill: false
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                title: {
+                    display: true,
+                    text: "Temperature (°C)"
+                }
+            }
+        }
+    }
+});
+
+// Get the context
+const ctxFlood = document.getElementById("floodChart").getContext("2d");
+
+// Initialize chart with initial server-rendered data
+let floodChart = new Chart(ctxFlood, {
+    type: "bar",
+    data: {
+        labels: floodLabels,
+        datasets: [{
+            label: "Flood Probability (%)",
+            data: floodValues,
+            backgroundColor: "#7c3aed",
+            borderRadius: 8
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: true } },
+        scales: {
+            y: { beginAtZero: true, max: 100, title: { display: true, text: "Probability (%)" } },
+            x: { title: { display: true, text: "Forecast Date" } }
+        }
+    }
+});
+
+// Function to fetch latest flood data from API
+async function updateFloodChart() {
+    try {
+        const response = await fetch("/api/flood_data");
+        const data = await response.json();
+
+        floodChart.data.labels = data.labels;
+        floodChart.data.datasets[0].data = data.values;
+        floodChart.update();
+    } catch (err) {
+        console.error("Error fetching flood data:", err);
+    }
+}
+
+// Refresh chart every 30 seconds
+setInterval(updateFloodChart, 30000);
+</script>
+{% endblock %}

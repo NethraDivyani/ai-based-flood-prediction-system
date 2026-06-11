@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Safety Guidance</h2>
+        <p class="text-muted mb-0">Guidance based on the latest flood forecast level</p>
+    </div>
+
+    <div class="forecast-card forecast-{{ level|lower|replace(' ', '-') }} mb-4">
+        <span class="forecast-label">Current Guidance Level</span>
+        <h2 class="fw-bold mt-2">{{ level }}</h2>
+    </div>
+
+    <div class="content-card">
+        <h4 class="fw-bold mb-3">{{ guidance.title }}</h4>
+        <ul class="clean-list">
+            {% for point in guidance.points %}
+            <li>{{ point }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

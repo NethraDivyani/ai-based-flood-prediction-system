@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section hero-gradient">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="badge rounded-pill hero-badge mb-3">AI Flood Forecasting</span>
+                <h1 class="display-5 fw-bold mb-3 text-white">Next-day flood prediction for the Kelani River Basin</h1>
+                <p class="lead hero-text mb-4">
+                    View tomorrow’s flood risk, rainfall trends, river level monitoring, historical charts, and public safety guidance through one web dashboard.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('public.forecast_page') }}" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold">View Forecast</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="glass-card colorful-card p-4">
+                    <h5 class="fw-bold mb-3 text-dark">System Features</h5>
+                    <div class="feature-item">
+                        <div class="feature-dot bg-primary"></div>
+                        <span>Tomorrow flood prediction</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-dot bg-warning"></div>
+                        <span>Rainfall and river trend charts</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-dot bg-danger"></div>
+                        <span>Public warnings and safety guidance</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-dot bg-success"></div>
+                        <span>Language support and user-friendly access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-5">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="metric-card colorful-metric metric-blue">
+                <h6>Forecast Type</h6>
+                <h3>Next Day</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card colorful-metric metric-green">
+                <h6>Stations</h6>
+                <h3>6</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card colorful-metric metric-orange">
+                <h6>Prediction Classes</h6>
+                <h3>4</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card colorful-metric metric-purple">
+                <h6>Public Access</h6>
+                <h3>Open</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-5">
+    <div class="row g-4">
+        <div class="col-lg-12">
+            <div class="content-card colorful-section h-100">
+                <h4 class="fw-bold mb-3">Public Services</h4>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="mini-card mini-blue">
+                            <h6 class="fw-semibold">Flood Forecast</h6>
+                            <p class="mb-0">View basin prediction for tomorrow with probability levels.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mini-card mini-green">
+                            <h6 class="fw-semibold">Graph Downloads</h6>
+                            <p class="mb-0">Access rainfall and river level visual reports.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mini-card mini-orange">
+                            <h6 class="fw-semibold">Alert Guidance</h6>
+                            <p class="mb-0">See risk levels, guidance, and emergency information.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mini-card mini-purple">
+                            <h6 class="fw-semibold">Language Support</h6>
+                            <p class="mb-0">English is default with Sinhala and Tamil switching.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

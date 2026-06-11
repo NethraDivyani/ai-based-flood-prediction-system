@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Subscribers</h2>
+        <p class="text-muted mb-0">Public flood alert subscriptions</p>
+    </div>
+
+    <div class="mb-3">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <div class="content-card">
+
+        <h4 class="fw-bold mb-3">Subscriber List</h4>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Language</th>
+                        <th>Subscribed At</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in subscribers %}
+                    <tr>
+                        <td>{{ row.full_name }}</td>
+                        <td>{{ row.email or "-" }}</td>
+                        <td>{{ row.phone or "-" }}</td>
+                        <td>
+                            {% if row.preferred_language == "si" %}
+                                Sinhala
+                            {% elif row.preferred_language == "ta" %}
+                                Tamil
+                            {% else %}
+                                English
+                            {% endif %}
+                        </td>
+                        <td>{{ row.subscribed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            No subscribers yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

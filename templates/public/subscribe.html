@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header-card mb-4">
+        <h2 class="fw-bold mb-2">Subscribe for Flood Alerts</h2>
+        <p class="text-muted mb-0">Receive flood alerts and warnings through the system</p>
+    </div>
+
+    <div class="content-card">
+        <form method="POST" action="{{ url_for('public.subscribe_page') }}">
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Full Name</label>
+                    <input
+                        type="text"
+                        name="full_name"
+                        class="form-control rounded-4"
+                        required
+                        minlength="3"
+                        maxlength="120"
+                        placeholder="Enter your full name"
+                    >
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control rounded-4"
+                        required
+                        maxlength="120"
+                        placeholder="Enter your email"
+                    >
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Phone</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        class="form-control rounded-4"
+                        required
+                        pattern="^(\+94|94|0)?7[01245678][0-9]{7}$"
+                        title="Enter a valid Sri Lankan mobile number"
+                        placeholder="e.g. 0771234567"
+                    >
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Preferred Language</label>
+                    <select name="preferred_language" class="form-select rounded-4" required>
+                        <option value="en">English</option>
+                        <option value="si">Sinhala</option>
+                        <option value="ta">Tamil</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    Subscribe
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
